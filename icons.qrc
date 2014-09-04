@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/new/icons">
+        <file>res/document-new.png</file>
+        <file>res/document-open.png</file>
+        <file>res/document-save.png</file>
+        <file>res/tools_generaltools_move_graphics_view.png</file>
+        <file>res/tools_generaltools_zoom_in.png</file>
+        <file>res/tools_generaltools_zoom_out.png</file>
+        <file>res/tools_movement_move.png</file>
+        <file>res/arrow_cursor_grab.png</file>
+        <file>res/tools_point_new_point.png</file>
+        <file>res/tools_spreadsheet_sum.png</file>
+    </qresource>
+</RCC>
