@@ -2,12 +2,13 @@
 #include <QDebug>
 
 
-const QList<QLineF> PrimAlgorithm::findEuclideanMST(const QList<QPointF> &vertexes)
+void PrimAlgorithm::findEuclideanMST(const QList<QPointF> &vertexes)
 {
-    QList<QLineF> result;
+    result.clear();
+
     int n = vertexes.size();
     if(n == 0)
-        return result;
+        return;
 
     int progress = 0;
     int progress_slice = n/100, progress_update = 0;
@@ -62,6 +63,11 @@ const QList<QLineF> PrimAlgorithm::findEuclideanMST(const QList<QPointF> &vertex
     delete[] pre;
     delete[] distances;
     delete[] visited;
-    return result;
 }
 
+
+
+const QList<QLineF> &PrimAlgorithm::getMSTEdges()
+{
+    return result;
+}

@@ -10,16 +10,20 @@ extern "C"{
 #include <QtAlgorithms>
 #include <QVector2D>
 
-const QList<QLineF> TriangleLib::findEuclideanMST(const QList<QPointF> &vertexes)
+void TriangleLib::findEuclideanMST(const QList<QPointF> &vertexes)
 {
     mEdges.clear();
     DelaunayEdges.clear();
     VoronoiEdges.clear();
+    MSTEdges.clear();
     triangleLibProcess(vertexes);
 
-    QList<QLineF> result;
-    kruskal(result, vertexes);
-    return result;
+    kruskal(MSTEdges, vertexes);
+}
+
+const QList<QLineF> &TriangleLib::getMSTEdges()
+{
+    return MSTEdges;
 }
 
 const QList<QLineF> &TriangleLib::getVoronoiEdges(QRectF &outBorder)

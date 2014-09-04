@@ -10,7 +10,8 @@ class AbstructMSTAlgo : public QObject
 {
     Q_OBJECT
 public:
-    virtual const QList<QLineF> findEuclideanMST(const QList<QPointF>& vertexes) = 0;
+    virtual void findEuclideanMST(const QList<QPointF>& vertexes) = 0;
+    virtual const QList<QLineF>& getMSTEdges() = 0;
 protected:
     qreal hypot(const QPointF &a, const QPointF &b) const;
 signals:

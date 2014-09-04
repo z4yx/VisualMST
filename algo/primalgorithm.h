@@ -7,7 +7,11 @@ class PrimAlgorithm : public AbstructMSTAlgo
 {
     Q_OBJECT
 public:
-    const QList<QLineF> findEuclideanMST(const QList<QPointF>& vertexes);
+    void findEuclideanMST(const QList<QPointF>& vertexes);
+    const QList<QLineF>& getMSTEdges();
+private:
+
+    QList<QLineF> result;
 };
 
 #endif // PRIMALGORITHM_H

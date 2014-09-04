@@ -12,13 +12,14 @@ class TriangleLib : public AbstructMSTAlgo
 {
     Q_OBJECT
 public:
-    const QList<QLineF> findEuclideanMST(const QList<QPointF>& vertexes);
+    void findEuclideanMST(const QList<QPointF>& vertexes);
+    const QList<QLineF>& getMSTEdges();
     const QList<QLineF>& getVoronoiEdges(QRectF &outBorder);
     const QList<QLineF>& getDelaunayEdges();
 private:
 
     typedef QPair<qreal,QPair<int,int> >  edges_t;
-    QList<QLineF> VoronoiEdges, DelaunayEdges;
+    QList<QLineF> VoronoiEdges, DelaunayEdges, MSTEdges;
     QVector<edges_t> mEdges;
     QRectF mBorder;
     void triangleLibProcess(const QList<QPointF>& vertexes);
