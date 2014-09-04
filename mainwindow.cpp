@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDebug>
 
 #include "algo/primalgorithm.h"
 #include "algo/trianglelib.h"
@@ -13,7 +14,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    isCalculating(false)
 {
     ui->setupUi(this);
 
@@ -81,15 +83,15 @@ void MainWindow::startCalculation()
 {
     mAlgo = new ALGO();
 
-    mProgressDialog->reset();
-    mProgressDialog->setModal(true);
     connect(mAlgo, SIGNAL(progressUpdated(int)), mProgressDialog, SLOT(setValue(int)));
 
+    qDebug() << "new thread";
     mThread = new AlgorithmWorker(mAlgo, &mVertexes->getVertexes());
     connect(mThread, SIGNAL(finished()), this, SLOT(calculationDone()));
+    qDebug() << "Thread start";
     mThread->start();
 
-    mProgressDialog->show();
+    qDebug() << "dialog shown";
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -104,6 +106,7 @@ void MainWindow::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, "Open Vertex File", "/Users/zhang/tmp", "Vertex Files (*.vtx)");
     mVertexes->loadVertexesFromFile(fileName);
     mGraphManager->drawVertexes(mVertexes->getVertexes());
+    qDebug() << "Open Done!";
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -131,7 +134,16 @@ void MainWindow::on_actionMoveMode_triggered()
 
 void MainWindow::on_actionFindMST_triggered()
 {
-    startCalculation();
+    if(isCalculating)
+        return;
+    isCalculating = true;
+
+
+    mProgressDialog->reset();
+    mProgressDialog->setModal(true);
+    mProgressDialog->show();
+    QCoreApplication::postEvent(this, new QEvent(QEvent::User));
+//    startCalculation();
 }
 
 void MainWindow::calculationDone()
@@ -141,6 +153,7 @@ void MainWindow::calculationDone()
 
     ALGO *algo = dynamic_cast<ALGO*> (mAlgo);
 
+    qDebug() << "done";
     mProgressDialog->cancel();
 
     dialog.setModal(true);
@@ -149,8 +162,20 @@ void MainWindow::calculationDone()
     dialog.setDelaunayEdges(algo->getDelaunayEdges());
     dialog.setMSTEdges(algo->getMSTEdges());
 
+    qDebug() << "delete";
     delete mThread;
     delete mAlgo;
 
     dialog.exec();
+    isCalculating = false;
+}
+
+bool MainWindow::event(QEvent *event)
+{
+    if(event->type() == QEvent::User){
+        qDebug() << "event";
+        startCalculation();
+        return true;
+    }
+    return QMainWindow::event(event);
 }

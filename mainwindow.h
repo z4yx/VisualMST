@@ -44,6 +44,9 @@ private slots:
 public slots:
     void calculationDone();
 
+protected:
+    bool event(QEvent *event);
+
 private:
     bool confirmClose();
     void startCalculation();
@@ -55,6 +58,8 @@ private:
     MSTVertexes *mVertexes;
     AbstructMSTAlgo *mAlgo;
     QThread *mThread;
+
+    bool isCalculating;
 };
 
 #endif // MAINWINDOW_H
