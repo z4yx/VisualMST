@@ -25,6 +25,18 @@ GraphManager::GraphManager(MSTGraphicsView *view)
     mView->setScene(scene);
 }
 
+void GraphManager::drawSingleVertex(QPointF point)
+{
+    QBrush brush(Qt::SolidPattern);
+    QGraphicsEllipseItem *pt;
+    pt = new QGraphicsEllipseItem(point.x()-VERTEX_SIZE/2, point.y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE);
+    pt->setZValue(ZValue_Vertexes);
+    pt->setBrush(brush);
+    pt->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+    pt->setAcceptHoverEvents(true);
+    scene->addItem(pt);
+}
+
 
 void GraphManager::drawVertexes(const QList<QPointF> &vtx, bool visible)
 {
@@ -37,9 +49,6 @@ void GraphManager::drawVertexes(const QList<QPointF> &vtx, bool visible)
         pt = new QGraphicsEllipseItem(i->x()-VERTEX_SIZE/2, i->y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE);
         pt->setZValue(ZValue_Vertexes);
         pt->setBrush(brush);
-        pt->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
-        pt->setAcceptHoverEvents(true);
-//        scene->addItem(pt);
         mVertexGroup->addToGroup(pt);
         ++i;
     }

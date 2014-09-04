@@ -14,6 +14,9 @@ class GraphManager
 
 public:
     GraphManager(MSTGraphicsView *view);
+
+    void drawSingleVertex(QPointF point);
+
     void drawVertexes(const QList<QPointF>&, bool visible = true);
     void drawMSTEdges(const QList<QLineF>&, bool visible = true);
     void drawDelaunayEdges(const QList<QLineF>&, bool visible = true);

@@ -105,7 +105,13 @@ void MainWindow::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open Vertex File", "/Users/zhang/tmp", "Vertex Files (*.vtx)");
     mVertexes->loadVertexesFromFile(fileName);
-    mGraphManager->drawVertexes(mVertexes->getVertexes());
+    const QList<QPointF> &vtx = mVertexes->getVertexes();
+    for(QList<QPointF>::const_iterator it = vtx.constBegin();
+        it != vtx.constEnd();
+        ++it){
+        mGraphManager->drawSingleVertex(*it);
+    }
+//    mGraphManager->drawVertexes(mVertexes->getVertexes());
     qDebug() << "Open Done!";
 }
 
