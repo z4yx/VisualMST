@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     algo/trianglelib.cpp \
     algo/abstructmstalgo.cpp \
     algo/primalgorithm.cpp \
-    resultdialog.cpp
+    resultdialog.cpp \
+    algo/algorithmworker.cpp
 
 HEADERS  += mainwindow.h \
     view.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     algo/trianglelib.h \
     algo/abstructmstalgo.h \
     algo/primalgorithm.h \
-    resultdialog.h
+    resultdialog.h \
+    algo/algorithmworker.h
 
 FORMS    += mainwindow.ui \
     resultdialog.ui

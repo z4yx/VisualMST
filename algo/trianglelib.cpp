@@ -90,7 +90,9 @@ void TriangleLib::triangleLibProcess(const QList<QPointF> &vertexes)
     /*   produce an edge list (e), a Voronoi diagram (v), and a triangle */
     /*   neighbor list (n).                                              */
 
+    emit progressUpdated(10);
     triangulate("zevQ", &in, &mid, &vorout);
+    emit progressUpdated(50);
 
     qDebug() << "Vertexes:" << in.numberofpoints;
     qDebug() << "DelaunayEdges:" << mid.numberofedges;
@@ -183,6 +185,7 @@ void TriangleLib::kruskal(QList<QLineF> &result, const QList<QPointF> &vtx)
         Union[i] = i;
 
     qSort(mEdges.begin(), mEdges.end(), compareEdge);
+    emit progressUpdated(80);
     result.reserve(n-1);
     for(QVector<edges_t>::ConstIterator it = mEdges.constBegin();
         it != mEdges.constEnd();
@@ -194,9 +197,11 @@ void TriangleLib::kruskal(QList<QLineF> &result, const QList<QPointF> &vtx)
         if(a != b) {
             Union[a] = b;
             result.append(QLineF(vtx[e.first], vtx[e.second]));
+            if(result.size() == n-1)
+                break;
         }
     }
-    assert(result.size() == n-1);
+    emit progressUpdated(100);
 }
 
 int TriangleLib::unionFind(int a, int *s) const

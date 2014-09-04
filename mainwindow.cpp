@@ -7,6 +7,9 @@
 
 #include "algo/primalgorithm.h"
 #include "algo/trianglelib.h"
+#include "algo/algorithmworker.h"
+
+#define ALGO TriangleLib
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mProgressDialog = new QProgressDialog(this);
     mResultDialog = new ResultDialog(this);
 
     mGraphicsView = new MSTGraphicsView(this);
@@ -73,6 +77,21 @@ bool MainWindow::confirmClose()
     return true;
 }
 
+void MainWindow::startCalculation()
+{
+    mAlgo = new ALGO();
+
+    mProgressDialog->reset();
+    mProgressDialog->setModal(true);
+    connect(mAlgo, SIGNAL(progressUpdated(int)), mProgressDialog, SLOT(setValue(int)));
+
+    mThread = new AlgorithmWorker(mAlgo, mVertexes->getVertexes());
+    connect(mThread, SIGNAL(finished()), this, SLOT(calculationDone()));
+    mThread->start();
+
+    mProgressDialog->show();
+}
+
 void MainWindow::on_actionNew_triggered()
 {
     if(!confirmClose())
@@ -112,15 +131,26 @@ void MainWindow::on_actionMoveMode_triggered()
 
 void MainWindow::on_actionFindMST_triggered()
 {
-    TriangleLib *algo = new TriangleLib();
-    QList<QLineF> edges = algo->findEuclideanMST(mVertexes->getVertexes());
+    startCalculation();
+}
 
+void MainWindow::calculationDone()
+{
     ResultDialog dialog;
     QRectF rect;
+
+    ALGO *algo = dynamic_cast<ALGO*> (mAlgo);
+
+    mProgressDialog->cancel();
+
     dialog.setModal(true);
     dialog.setVoronoiEdges(algo->getVoronoiEdges(rect), rect);
     dialog.setMSTVertexes(mVertexes->getVertexes());
     dialog.setDelaunayEdges(algo->getDelaunayEdges());
-    dialog.setMSTEdges(edges);
+    dialog.setMSTEdges(algo->getMSTEdges());
+
+    delete mThread;
+    delete mAlgo;
+
     dialog.exec();
 }

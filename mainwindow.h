@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QProgressDialog>
 #include "graphmanager.h"
 #include "view.h"
+#include "algo/abstructmstalgo.h"
 
 namespace Ui {
 class MainWindow;
@@ -39,13 +41,20 @@ private slots:
 
     void on_actionFindMST_triggered();
 
+public slots:
+    void calculationDone();
+
 private:
     bool confirmClose();
+    void startCalculation();
     Ui::MainWindow *ui;
+    QProgressDialog *mProgressDialog;
     ResultDialog *mResultDialog;
     MSTGraphicsView *mGraphicsView;
     GraphManager *mGraphManager;
     MSTVertexes *mVertexes;
+    AbstructMSTAlgo *mAlgo;
+    QThread *mThread;
 };
 
 #endif // MAINWINDOW_H
