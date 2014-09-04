@@ -85,7 +85,7 @@ void MainWindow::startCalculation()
     mProgressDialog->setModal(true);
     connect(mAlgo, SIGNAL(progressUpdated(int)), mProgressDialog, SLOT(setValue(int)));
 
-    mThread = new AlgorithmWorker(mAlgo, mVertexes->getVertexes());
+    mThread = new AlgorithmWorker(mAlgo, &mVertexes->getVertexes());
     connect(mThread, SIGNAL(finished()), this, SLOT(calculationDone()));
     mThread->start();
 

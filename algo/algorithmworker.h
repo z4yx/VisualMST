@@ -9,12 +9,12 @@ class AlgorithmWorker : public QThread
 {
     Q_OBJECT
 public:
-    AlgorithmWorker(AbstructMSTAlgo* algo, const QList<QPointF>& vertexes);
+    AlgorithmWorker(AbstructMSTAlgo* algo, const QList<QPointF> *vertexes);
 protected:
     void run();
 private:
     AbstructMSTAlgo *mAlgo;
-    QList<QPointF> mVertexes;
+    const QList<QPointF> *mVertexes;
 };
 
 #endif // ALGORITHMWORKER_H
