@@ -8,9 +8,10 @@ MSTVertexes::MSTVertexes()
     changed = false;
 }
 
-void MSTVertexes::clearVertexes()
+void MSTVertexes::clearDocuments()
 {
     mVertexes.clear();
+    emit newVertexesLoaded(mVertexes);
     changed = false;
 }
 
@@ -32,8 +33,9 @@ void MSTVertexes::loadVertexesFromFile(QString fileName)
             stream >> x >> y;
             mVertexes.append(QPointF(x, y));
         }
+        emit newVertexesLoaded(mVertexes);
+        changed = false;
     }
-    changed = false;
 }
 
 void MSTVertexes::saveVertexesToFile(QString fileName)
@@ -56,4 +58,10 @@ void MSTVertexes::saveVertexesToFile(QString fileName)
 bool MSTVertexes::isChanged()
 {
     return changed;
+}
+
+void MSTVertexes::changeVertexPos(int index, QPointF delta)
+{
+    mVertexes[index] += delta;
+    changed = true;
 }

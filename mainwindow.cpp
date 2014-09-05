@@ -35,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mVertexes = new MSTVertexes();
 
     mGraphManager = new GraphManager(mGraphicsView);
+
+    connect(mGraphManager, SIGNAL(itemPosChangedEvent(int,QPointF)), mVertexes, SLOT(changeVertexPos(int,QPointF)));
+    connect(mVertexes, SIGNAL(newVertexesLoaded(QList<QPointF>)), mGraphManager, SLOT(drawEditableVertex(QList<QPointF>)));
 }
 
 MainWindow::~MainWindow()
@@ -98,19 +101,13 @@ void MainWindow::on_actionNew_triggered()
 {
     if(!confirmClose())
         return;
-    mVertexes->clearVertexes();
+    mVertexes->clearDocuments();
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open Vertex File", "/Users/zhang/tmp", "Vertex Files (*.vtx)");
     mVertexes->loadVertexesFromFile(fileName);
-    const QList<QPointF> &vtx = mVertexes->getVertexes();
-    for(QList<QPointF>::const_iterator it = vtx.constBegin();
-        it != vtx.constEnd();
-        ++it){
-        mGraphManager->drawSingleVertex(*it);
-    }
 //    mGraphManager->drawVertexes(mVertexes->getVertexes());
     qDebug() << "Open Done!";
 }
@@ -125,7 +122,7 @@ void MainWindow::on_actionClose_triggered()
 {
     if(!confirmClose())
         return;
-    mVertexes->clearVertexes();
+    mVertexes->clearDocuments();
 }
 
 void MainWindow::on_actionSelectMode_triggered()

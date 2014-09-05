@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     algo/abstructmstalgo.cpp \
     algo/primalgorithm.cpp \
     resultdialog.cpp \
-    algo/algorithmworker.cpp
+    algo/algorithmworker.cpp \
+    graphicsvertexitem.cpp
 
 HEADERS  += mainwindow.h \
     view.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     algo/abstructmstalgo.h \
     algo/primalgorithm.h \
     resultdialog.h \
-    algo/algorithmworker.h
+    algo/algorithmworker.h \
+    graphicsvertexitem.h
 
 FORMS    += mainwindow.ui \
     resultdialog.ui

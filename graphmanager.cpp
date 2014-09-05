@@ -3,6 +3,8 @@
 #include <QGraphicsEllipseItem>
 #include <QDebug>
 
+#include "graphicsvertexitem.h"
+
 #define VERTEX_SIZE 0.2
 #define EDGE_WIDTH  0.03
 
@@ -25,15 +27,27 @@ GraphManager::GraphManager(MSTGraphicsView *view)
     mView->setScene(scene);
 }
 
-void GraphManager::drawSingleVertex(QPointF point)
+void GraphManager::drawEditableVertex(const QList<QPointF> &vtx)
+{
+    int i = 0;
+    scene->clear();
+    for(QList<QPointF>::const_iterator it = vtx.constBegin();
+        it != vtx.constEnd();
+        ++it){
+
+        drawSingleVertex(*it, i++);
+    }
+}
+
+void GraphManager::drawSingleVertex(QPointF point, int id)
 {
     QBrush brush(Qt::SolidPattern);
-    QGraphicsEllipseItem *pt;
-    pt = new QGraphicsEllipseItem(point.x()-VERTEX_SIZE/2, point.y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE);
+    GraphicsVertexItem *pt;
+    pt = new GraphicsVertexItem(point.x()-VERTEX_SIZE/2, point.y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE, id, this);
     pt->setZValue(ZValue_Vertexes);
     pt->setBrush(brush);
-    pt->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
-    pt->setAcceptHoverEvents(true);
+    pt->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable/*|QGraphicsItem::ItemSendsGeometryChanges*/);
+//    pt->setAcceptHoverEvents(true);
     scene->addItem(pt);
 }
 
@@ -130,4 +144,9 @@ void GraphManager::showDelaunayEdges(bool visible)
 void GraphManager::showVoronoiEdges(bool visible)
 {
     mVoronoiEdgeGroup->setVisible(visible);
+}
+
+void GraphManager::itemPosChanged(int id, QPointF delta)
+{
+    emit itemPosChangedEvent(id, delta);
 }
