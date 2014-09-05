@@ -94,9 +94,11 @@ void MSTGraphicsView::setPointerMode(PointerMode mode)
         setInteractive(false);
     }else if(mode == SelectMode){
         setDragMode(QGraphicsView::RubberBandDrag);
+        setCursor(QCursor(Qt::ArrowCursor));
         setInteractive(true);
     }else if(mode == DrawPointMode){
         setDragMode(QGraphicsView::RubberBandDrag);
+        setCursor(QCursor(Qt::CrossCursor));
         setInteractive(false);
     }
     mCurMode = mode;
