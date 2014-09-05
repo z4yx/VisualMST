@@ -11,5 +11,6 @@
         <file>res/tools_point_new_point.png</file>
         <file>res/tools_spreadsheet_sum.png</file>
         <file>res/properties_object_list_add.png</file>
+        <file>res/Image-button_cancel.png</file>
     </qresource>
 </RCC>

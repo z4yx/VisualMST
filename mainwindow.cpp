@@ -126,6 +126,7 @@ void MainWindow::on_actionClose_triggered()
     if(!confirmClose())
         return;
     mVertexes->clearDocuments();
+    close();
 }
 
 void MainWindow::on_actionSelectMode_triggered()
