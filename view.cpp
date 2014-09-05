@@ -106,7 +106,7 @@ void MSTGraphicsView::setPointerMode(PointerMode mode)
 
 void MSTGraphicsView::initView()
 {
-    zoom = 0;
+    zoom = 0.9;
     setRenderHint(QPainter::Antialiasing, false);
     setOptimizationFlags(QGraphicsView::DontSavePainterState);
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);

@@ -42,6 +42,9 @@ void TriangleLib::triangleLibProcess(const QList<QPointF> &vertexes)
     struct triangulateio in, mid, vorout;
     int n = vertexes.size();
 
+    if(n == 0)
+        return;
+
     memset(&in, 0, sizeof(in));
     memset(&mid, 0, sizeof(mid));
     memset(&vorout, 0, sizeof(vorout));
@@ -180,6 +183,10 @@ void TriangleLib::saveVoronoiGraph(const triangulateio &vorout)
 void TriangleLib::kruskal(QList<QLineF> &result, const QList<QPointF> &vtx)
 {
     int n = vtx.size();
+
+    if(n == 0)
+        return;
+
     int *Union = new int[n];
     for(int i = 0; i < n; i++)
         Union[i] = i;
@@ -201,6 +208,8 @@ void TriangleLib::kruskal(QList<QLineF> &result, const QList<QPointF> &vtx)
                 break;
         }
     }
+    delete[] Union;
+
     emit progressUpdated(100);
 }
 
@@ -215,7 +224,6 @@ int TriangleLib::unionFind(int a, int *s) const
         s[a] = i;
         a = j;
     }
-    assert(a == i);
     return a;
 }
 
