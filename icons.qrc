@@ -10,5 +10,6 @@
         <file>res/arrow_cursor_grab.png</file>
         <file>res/tools_point_new_point.png</file>
         <file>res/tools_spreadsheet_sum.png</file>
+        <file>res/properties_object_list_add.png</file>
     </qresource>
 </RCC>

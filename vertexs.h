@@ -23,6 +23,7 @@ signals:
     void newVertexesLoaded(const QList<QPointF>&);
 public slots:
     void changeVertexPos(int index, QPointF delta);
+    void newVertex(int &newIndex, QPointF pt);
 };
 
 #endif // VERTEXS_H

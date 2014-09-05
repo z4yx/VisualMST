@@ -62,6 +62,8 @@
    <addaction name="actionPointMode"/>
    <addaction name="separator"/>
    <addaction name="actionFindMST"/>
+   <addaction name="separator"/>
+   <addaction name="actionNewPoint"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -169,6 +171,18 @@
    </property>
    <property name="toolTip">
     <string>Find MST</string>
+   </property>
+  </action>
+  <action name="actionNewPoint">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/new/icons/res/properties_object_list_add.png</normaloff>:/new/icons/res/properties_object_list_add.png</iconset>
+   </property>
+   <property name="text">
+    <string>NewPoint</string>
+   </property>
+   <property name="toolTip">
+    <string>New Point</string>
    </property>
   </action>
  </widget>

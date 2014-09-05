@@ -65,3 +65,10 @@ void MSTVertexes::changeVertexPos(int index, QPointF delta)
     mVertexes[index] += delta;
     changed = true;
 }
+
+void MSTVertexes::newVertex(int &newIndex, QPointF pt)
+{
+    newIndex = mVertexes.size();
+    mVertexes.append(pt);
+    changed = true;
+}

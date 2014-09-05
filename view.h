@@ -53,13 +53,15 @@ class MSTGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    enum PointerMode{SelectMode, MoveMode};
+    enum PointerMode{SelectMode, MoveMode, DrawPointMode};
     MSTGraphicsView(QWidget* parent = 0) : QGraphicsView(parent){}
 
 
     void initView();
 protected:
     void wheelEvent(QWheelEvent *);
+    void mousePressEvent(QMouseEvent * e);
+
     void resetView();
     void setupMatrix();
 
@@ -71,8 +73,12 @@ public slots:
 private:
     //from -1 to +1
     qreal zoom;
+    PointerMode mCurMode;
 
     MSTVertexes *vertexes;
+
+signals:
+    void newPointEvent(QPointF pt);
 };
 
 #endif

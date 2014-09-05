@@ -63,6 +63,17 @@ void MSTGraphicsView::wheelEvent(QWheelEvent *e)
     }
 }
 
+void MSTGraphicsView::mousePressEvent(QMouseEvent *e)
+{
+    if(mCurMode == DrawPointMode && e->button() == Qt::LeftButton){
+        QPointF pt = mapToScene(e->pos());
+        qDebug() << pt;
+        emit newPointEvent(pt);
+    }else{
+        QGraphicsView::mousePressEvent(e);
+    }
+}
+
 
 void MSTGraphicsView::zoomIn(qreal val)
 {
@@ -84,17 +95,22 @@ void MSTGraphicsView::setPointerMode(PointerMode mode)
     }else if(mode == SelectMode){
         setDragMode(QGraphicsView::RubberBandDrag);
         setInteractive(true);
+    }else if(mode == DrawPointMode){
+        setDragMode(QGraphicsView::RubberBandDrag);
+        setInteractive(false);
     }
+    mCurMode = mode;
 }
 
 void MSTGraphicsView::initView()
 {
     zoom = 0;
     setRenderHint(QPainter::Antialiasing, false);
-    setDragMode(QGraphicsView::RubberBandDrag);
     setOptimizationFlags(QGraphicsView::DontSavePainterState);
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+    setPointerMode(SelectMode);
 
     setupMatrix();
 }

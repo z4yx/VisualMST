@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     mProgressDialog = new QProgressDialog(this);
+    mNewPointDialog = new NewPointDialog(this);
     mResultDialog = new ResultDialog(this);
 
     mGraphicsView = new MSTGraphicsView(this);
@@ -36,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mGraphManager = new GraphManager(mGraphicsView);
 
+    connect(mGraphicsView, SIGNAL(newPointEvent(QPointF)), this, SLOT(addNewPoint(QPointF)));
     connect(mGraphManager, SIGNAL(itemPosChangedEvent(int,QPointF)), mVertexes, SLOT(changeVertexPos(int,QPointF)));
     connect(mVertexes, SIGNAL(newVertexesLoaded(QList<QPointF>)), mGraphManager, SLOT(drawEditableVertex(QList<QPointF>)));
 }
@@ -135,6 +137,11 @@ void MainWindow::on_actionMoveMode_triggered()
     mGraphicsView->setPointerMode(MSTGraphicsView::MoveMode);
 }
 
+void MainWindow::on_actionPointMode_triggered()
+{
+    mGraphicsView->setPointerMode(MSTGraphicsView::DrawPointMode);
+}
+
 void MainWindow::on_actionFindMST_triggered()
 {
     if(isCalculating)
@@ -147,6 +154,15 @@ void MainWindow::on_actionFindMST_triggered()
     mProgressDialog->show();
     QCoreApplication::postEvent(this, new QEvent(QEvent::User));
 //    startCalculation();
+}
+
+void MainWindow::on_actionNewPoint_triggered()
+{
+    mNewPointDialog->setModal(true);
+    if(mNewPointDialog->exec() == QDialog::Accepted){
+        QPointF pt = mNewPointDialog->getInputPoint();
+        addNewPoint(pt);
+    }
 }
 
 void MainWindow::calculationDone()
@@ -173,6 +189,14 @@ void MainWindow::calculationDone()
     isCalculating = false;
 }
 
+void MainWindow::addNewPoint(QPointF pt)
+{
+    int idx;
+    mVertexes->newVertex(idx, pt);
+    mGraphManager->drawSingleVertex(pt, idx);
+    qDebug() << "new point id" << idx;
+}
+
 bool MainWindow::event(QEvent *event)
 {
     if(event->type() == QEvent::User){
@@ -182,3 +206,4 @@ bool MainWindow::event(QEvent *event)
     }
     return QMainWindow::event(event);
 }
+

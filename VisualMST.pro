@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     algo/primalgorithm.cpp \
     resultdialog.cpp \
     algo/algorithmworker.cpp \
-    graphicsvertexitem.cpp
+    graphicsvertexitem.cpp \
+    newpointdialog.cpp
 
 HEADERS  += mainwindow.h \
     view.h \
@@ -36,10 +37,12 @@ HEADERS  += mainwindow.h \
     algo/primalgorithm.h \
     resultdialog.h \
     algo/algorithmworker.h \
-    graphicsvertexitem.h
+    graphicsvertexitem.h \
+    newpointdialog.h
 
 FORMS    += mainwindow.ui \
-    resultdialog.ui
+    resultdialog.ui \
+    newpointdialog.ui
 
 RESOURCES += \
     icons.qrc

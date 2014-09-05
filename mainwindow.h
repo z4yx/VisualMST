@@ -6,6 +6,7 @@
 #include "graphmanager.h"
 #include "view.h"
 #include "algo/abstructmstalgo.h"
+#include "newpointdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,8 +42,13 @@ private slots:
 
     void on_actionFindMST_triggered();
 
+    void on_actionPointMode_triggered();
+
+    void on_actionNewPoint_triggered();
+
 public slots:
     void calculationDone();
+    void addNewPoint(QPointF pt);
 
 protected:
     bool event(QEvent *event);
@@ -52,6 +58,7 @@ private:
     void startCalculation();
     Ui::MainWindow *ui;
     QProgressDialog *mProgressDialog;
+    NewPointDialog *mNewPointDialog;
     ResultDialog *mResultDialog;
     MSTGraphicsView *mGraphicsView;
     GraphManager *mGraphManager;
