@@ -14,6 +14,7 @@ GraphManager::GraphManager(MSTGraphicsView *view)
     mView = view;
 
     scene = new QGraphicsScene(mView);
+    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
 
     mVertexGroup = scene->createItemGroup(QList<QGraphicsItem *>());
     mMSTEdgeGroup = scene->createItemGroup(QList<QGraphicsItem *>());
