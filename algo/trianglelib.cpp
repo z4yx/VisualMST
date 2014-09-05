@@ -156,9 +156,27 @@ void TriangleLib::calcVoronoiBorder(const triangulateio &vorout)
                    mBorder.width()/3, mBorder.height()/3);
 }
 
+void TriangleLib::cutVoronoiRay(QLineF &ray)
+{
+    QPointF point;
+    QLineF e(mBorder.topLeft(), mBorder.topRight());
+    if(ray.intersect(e, &point) == QLineF::BoundedIntersection){
+        ray.setP2(point);
+    }else if(e.setP1(mBorder.bottomRight()), (ray.intersect(e, &point) == QLineF::BoundedIntersection)){
+        ray.setP2(point);
+    }else if(e.setP2(mBorder.bottomLeft()), (ray.intersect(e, &point) == QLineF::BoundedIntersection)){
+        ray.setP2(point);
+    }else if(e.setP1(mBorder.topLeft()), (ray.intersect(e, &point) == QLineF::BoundedIntersection)){
+        ray.setP2(point);
+    }else{
+        qDebug() << __func__ << "No Intersection";
+    }
+}
+
 void TriangleLib::saveVoronoiGraph(const triangulateio &vorout)
 {
     calcVoronoiBorder(vorout);
+    qreal max_length = hypot(QPointF(mBorder.width(), 0), QPointF(0, mBorder.height()));
 
     VoronoiEdges.reserve(vorout.numberofedges);
     for (int i = 0; i < vorout.numberofedges; ++i)
@@ -169,8 +187,10 @@ void TriangleLib::saveVoronoiGraph(const triangulateio &vorout)
             QPointF st(vorout.pointlist[a*2], vorout.pointlist[a*2+1]);
             QVector2D dir(vorout.normlist[i*2], vorout.normlist[i*2+1]);
             dir.normalize();
-            dir *= 10;
-            VoronoiEdges.append(QLineF(st, st + dir.toPointF()));
+            dir *= max_length;
+            QLineF ray(st, st + dir.toPointF());
+            cutVoronoiRay(ray);
+            VoronoiEdges.append(ray);
         }else{
             assert(a < vorout.numberofpoints && b < vorout.numberofpoints);
             VoronoiEdges.append(QLineF(

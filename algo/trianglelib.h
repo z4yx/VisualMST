@@ -24,6 +24,7 @@ private:
     QRectF mBorder;
     void triangleLibProcess(const QList<QPointF>& vertexes);
     void calcVoronoiBorder(const triangulateio &vorout);
+    void cutVoronoiRay(QLineF &ray);
     void saveVoronoiGraph(const triangulateio &vorout);
 
     void kruskal(QList<QLineF>& result, const QList<QPointF> &);

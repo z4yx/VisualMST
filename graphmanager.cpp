@@ -1,6 +1,7 @@
 #include "graphmanager.h"
 #include <QGraphicsLineItem>
 #include <QGraphicsEllipseItem>
+#include <QGraphicsRectItem>
 #include <QDebug>
 
 #include "graphicsvertexitem.h"
@@ -121,6 +122,11 @@ void GraphManager::drawVoronoiEdges(const QList<QLineF> &edge, const QRectF &rec
         mVoronoiEdgeGroup->addToGroup(pt);
         ++i;
     }
+    QGraphicsRectItem *border = new QGraphicsRectItem(rect);
+    pen.setStyle(Qt::DotLine);
+    border->setPen(pen);
+    mVoronoiEdgeGroup->addToGroup(border);
+
     mVoronoiEdgeGroup->setVisible(visible);
     scene->addItem(mVoronoiEdgeGroup);
 
