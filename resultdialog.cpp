@@ -24,6 +24,8 @@ ResultDialog::~ResultDialog()
 void ResultDialog::setMSTVertexes(const QList<QPointF> &vtx)
 {
     mGraphManager->drawVertexes(vtx);
+    if(vtx.size() < 500)
+        mGraphicsView->setRenderHint(QPainter::Antialiasing);
 }
 
 void ResultDialog::setMSTEdges(const QList<QLineF> &e)
