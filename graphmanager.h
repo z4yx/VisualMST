@@ -15,6 +15,8 @@ private:
     QGraphicsScene *scene;
     QGraphicsItemGroup *mVertexGroup, *mMSTEdgeGroup, *mVoronoiEdgeGroup, *mDelaunayEdgeGroup;
 
+    void removeAndDeleteGroupItems(QGraphicsItemGroup *grp);
+
 public:
     GraphManager(MSTGraphicsView *view);
 

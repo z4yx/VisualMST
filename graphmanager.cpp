@@ -53,10 +53,23 @@ void GraphManager::drawSingleVertex(QPointF point, int id)
     scene->addItem(pt);
 }
 
+void GraphManager::removeAndDeleteGroupItems(QGraphicsItemGroup *grp)
+{
+    scene->removeItem(grp);
+
+    const QList<QGraphicsItem*> &pts = grp->childItems();
+    for(QList<QGraphicsItem*>::const_iterator it = pts.constBegin();
+        it != pts.constEnd();
+        ++it) {
+
+        delete (*it);
+    }
+}
+
 
 void GraphManager::drawVertexes(const QMap<int,QPointF> &vtx, bool visible)
 {
-    scene->removeItem(mVertexGroup);
+    removeAndDeleteGroupItems(mVertexGroup);
 
     QMap<int,QPointF>::const_iterator i = vtx.constBegin();
     QBrush brush(Qt::SolidPattern);
@@ -74,7 +87,7 @@ void GraphManager::drawVertexes(const QMap<int,QPointF> &vtx, bool visible)
 
 void GraphManager::drawMSTEdges(const QList<QLineF> &edge, bool visible)
 {
-    scene->removeItem(mMSTEdgeGroup);
+    removeAndDeleteGroupItems(mMSTEdgeGroup);
 
     QList<QLineF>::const_iterator i = edge.constBegin();
     QPen pen(QColor(255, 0, 0), EDGE_WIDTH/*, Qt::DotLine*/);
@@ -93,7 +106,7 @@ void GraphManager::drawMSTEdges(const QList<QLineF> &edge, bool visible)
 
 void GraphManager::drawDelaunayEdges(const QList<QLineF> &edge, bool visible)
 {
-    scene->removeItem(mDelaunayEdgeGroup);
+    removeAndDeleteGroupItems(mDelaunayEdgeGroup);
 
     QList<QLineF>::const_iterator i = edge.constBegin();
     QPen pen(QColor(), EDGE_WIDTH);
@@ -111,7 +124,7 @@ void GraphManager::drawDelaunayEdges(const QList<QLineF> &edge, bool visible)
 
 void GraphManager::drawVoronoiEdges(const QList<QLineF> &edge, const QRectF &rect, bool visible)
 {
-    scene->removeItem(mVoronoiEdgeGroup);
+    removeAndDeleteGroupItems(mVoronoiEdgeGroup);
 
     QList<QLineF>::const_iterator i = edge.constBegin();
     QPen pen(QColor(0, 0, 255), EDGE_WIDTH);
