@@ -46,6 +46,8 @@ private slots:
 
     void on_actionNewPoint_triggered();
 
+    void on_actionRemovePoint_triggered();
+
 public slots:
     void calculationDone();
     void addNewPoint(QPointF pt);

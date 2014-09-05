@@ -17,7 +17,7 @@ public:
     explicit ResultDialog(QWidget *parent = 0);
     ~ResultDialog();
 
-    void setMSTVertexes(const QList<QPointF>&);
+    void setMSTVertexes(const QMap<int,QPointF>&);
     void setMSTEdges(const QList<QLineF>&);
     void setDelaunayEdges(const QList<QLineF>&);
     void setVoronoiEdges(const QList<QLineF>&, const QRectF &border);

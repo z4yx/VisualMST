@@ -21,7 +21,7 @@ ResultDialog::~ResultDialog()
     delete mGraphManager;
 }
 
-void ResultDialog::setMSTVertexes(const QList<QPointF> &vtx)
+void ResultDialog::setMSTVertexes(const QMap<int,QPointF> &vtx)
 {
     mGraphManager->drawVertexes(vtx);
     if(vtx.size() < 500)

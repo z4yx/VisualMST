@@ -3,7 +3,7 @@
 
 #include "view.h"
 #include <QGraphicsScene>
-
+#include <QMap>
 
 class GraphManager : public QObject
 {
@@ -20,7 +20,7 @@ public:
 
     void drawSingleVertex(QPointF point, int id);
 
-    void drawVertexes(const QList<QPointF>&, bool visible = true);
+    void drawVertexes(const QMap<int,QPointF>&, bool visible = true);
     void drawMSTEdges(const QList<QLineF>&, bool visible = true);
     void drawDelaunayEdges(const QList<QLineF>&, bool visible = true);
     void drawVoronoiEdges(const QList<QLineF>&, const QRectF &rect, bool visible = true);
@@ -31,10 +31,13 @@ public:
     void showVoronoiEdges(bool visible = true);
 
     void itemPosChanged(int id, QPointF pos);
+
+    void removeSelectedItem();
 signals:
     void itemPosChangedEvent(int id, QPointF delta);
+    void itemDeleted(int id);
 public slots:
-    void drawEditableVertex(const QList<QPointF>&);
+    void drawEditableVertex(const QMap<int,QPointF>&);
 };
 
 #endif // GRAPHMANAGER_H

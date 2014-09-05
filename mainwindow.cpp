@@ -39,7 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(mGraphicsView, SIGNAL(newPointEvent(QPointF)), this, SLOT(addNewPoint(QPointF)));
     connect(mGraphManager, SIGNAL(itemPosChangedEvent(int,QPointF)), mVertexes, SLOT(changeVertexPos(int,QPointF)));
-    connect(mVertexes, SIGNAL(newVertexesLoaded(QList<QPointF>)), mGraphManager, SLOT(drawEditableVertex(QList<QPointF>)));
+    connect(mGraphManager, SIGNAL(itemDeleted(int)), mVertexes, SLOT(deleteVertex(int)));
+    connect(mVertexes, SIGNAL(newVertexesLoaded(QMap<int,QPointF>)), mGraphManager, SLOT(drawEditableVertex(QMap<int,QPointF>)));
 }
 
 MainWindow::~MainWindow()
@@ -165,6 +166,11 @@ void MainWindow::on_actionNewPoint_triggered()
         QPointF pt = mNewPointDialog->getInputPoint();
         addNewPoint(pt);
     }
+}
+
+void MainWindow::on_actionRemovePoint_triggered()
+{
+    mGraphManager->removeSelectedItem();
 }
 
 void MainWindow::calculationDone()

@@ -29,15 +29,15 @@ GraphManager::GraphManager(MSTGraphicsView *view)
     mView->setScene(scene);
 }
 
-void GraphManager::drawEditableVertex(const QList<QPointF> &vtx)
+void GraphManager::drawEditableVertex(const QMap<int,QPointF> &vtx)
 {
-    int i = 0;
+    qDebug() << (int)vtx.size();
     scene->clear();
-    for(QList<QPointF>::const_iterator it = vtx.constBegin();
+    for(QMap<int,QPointF>::const_iterator it = vtx.constBegin();
         it != vtx.constEnd();
         ++it){
 
-        drawSingleVertex(*it, i++);
+        drawSingleVertex(it.value(), it.key());
     }
 }
 
@@ -54,15 +54,15 @@ void GraphManager::drawSingleVertex(QPointF point, int id)
 }
 
 
-void GraphManager::drawVertexes(const QList<QPointF> &vtx, bool visible)
+void GraphManager::drawVertexes(const QMap<int,QPointF> &vtx, bool visible)
 {
     scene->removeItem(mVertexGroup);
 
-    QList<QPointF>::const_iterator i = vtx.constBegin();
+    QMap<int,QPointF>::const_iterator i = vtx.constBegin();
     QBrush brush(Qt::SolidPattern);
     while (i != vtx.constEnd()) {
         QGraphicsEllipseItem *pt;
-        pt = new QGraphicsEllipseItem(i->x()-VERTEX_SIZE/2, i->y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE);
+        pt = new QGraphicsEllipseItem(i.value().x()-VERTEX_SIZE/2, i.value().y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE);
         pt->setZValue(ZValue_Vertexes);
         pt->setBrush(brush);
         mVertexGroup->addToGroup(pt);
@@ -156,4 +156,17 @@ void GraphManager::showVoronoiEdges(bool visible)
 void GraphManager::itemPosChanged(int id, QPointF delta)
 {
     emit itemPosChangedEvent(id, delta);
+}
+
+void GraphManager::removeSelectedItem()
+{
+    const QList<QGraphicsItem*>& items = scene->selectedItems();
+    for(QList<QGraphicsItem*>::const_iterator it = items.constBegin();
+        it != items.constEnd();
+        ++it) {
+
+        GraphicsVertexItem *item = dynamic_cast<GraphicsVertexItem*>(*it);
+        emit itemDeleted(item->getVertexId());
+        delete item;
+    }
 }

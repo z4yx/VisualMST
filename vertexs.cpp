@@ -6,6 +6,7 @@
 MSTVertexes::MSTVertexes()
 {
     changed = false;
+    idGenerator = 0;
 }
 
 void MSTVertexes::clearDocuments()
@@ -15,7 +16,7 @@ void MSTVertexes::clearDocuments()
     changed = false;
 }
 
-const QList<QPointF>& MSTVertexes::getVertexes()
+const QMap<int,QPointF>& MSTVertexes::getVertexes()
 {
     return mVertexes;
 }
@@ -31,7 +32,7 @@ void MSTVertexes::loadVertexesFromFile(QString fileName)
         mVertexes.clear();
         while(n--){
             stream >> x >> y;
-            mVertexes.append(QPointF(x, y));
+            mVertexes.insert(++idGenerator,QPointF(x, y));
         }
         emit newVertexesLoaded(mVertexes);
         changed = false;
@@ -46,9 +47,9 @@ void MSTVertexes::saveVertexesToFile(QString fileName)
         int n = mVertexes.size();
         stream << n << '\n';
 
-        QList<QPointF>::const_iterator i = mVertexes.constBegin();
+        QMap<int,QPointF>::const_iterator i = mVertexes.constBegin();
         while (i != mVertexes.constEnd()) {
-            stream << i->x() << ' ' << i->y() << '\n';
+            stream << i.value().x() << ' ' << i.value().y() << '\n';
             ++i;
         }
     }
@@ -68,7 +69,13 @@ void MSTVertexes::changeVertexPos(int index, QPointF delta)
 
 void MSTVertexes::newVertex(int &newIndex, QPointF pt)
 {
-    newIndex = mVertexes.size();
-    mVertexes.append(pt);
+    mVertexes.insert(++idGenerator, pt);
+    newIndex = idGenerator;
+    changed = true;
+}
+
+void MSTVertexes::deleteVertex(int index)
+{
+    mVertexes.remove(index);
     changed = true;
 }

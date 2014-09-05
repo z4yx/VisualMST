@@ -9,6 +9,10 @@ class GraphicsVertexItem : public QGraphicsEllipseItem
 {
 public:
     GraphicsVertexItem(qreal x, qreal y, qreal w, qreal h, int id, GraphManager* mgr);
+    int getVertexId(){
+        return mId;
+    }
+
 protected:
 
 //    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
