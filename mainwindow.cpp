@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     mProgressDialog = new QProgressDialog(this);
+    mProgressDialog->setCancelButton(0);
     mNewPointDialog = new NewPointDialog(this);
     mResultDialog = new ResultDialog(this);
 
@@ -105,11 +106,11 @@ void MainWindow::preStartCalculation()
     if(currentAlgo & AlgoChoiceDialog::Delaunay){
         mAlgo = new TriangleLib();
         qDebug() << "start TriangleLib";
-        mProgressDialog->setLabel(new QLabel("Calculating using triangle..."));
+        mProgressDialog->setLabelText("Calculating using triangle...");
     }else if(currentAlgo & AlgoChoiceDialog::Prim){
         mAlgo = new PrimAlgorithm();
         qDebug() << "start PrimAlgorithm";
-        mProgressDialog->setLabel(new QLabel("Calculating using prim..."));
+        mProgressDialog->setLabelText("Calculating using prim...");
     }else{
         qDebug() << "No algorithm specified";
         return;
