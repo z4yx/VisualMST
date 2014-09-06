@@ -21,6 +21,9 @@ public:
     void setMSTEdges(const QList<QLineF>&);
     void setDelaunayEdges(const QList<QLineF>&);
     void setVoronoiEdges(const QList<QLineF>&, const QRectF &border);
+
+    void setPrimTimeUsage(qint64 t);
+    void setDelaunayTimeUsage(qint64 t);
 private slots:
     void on_showMST_clicked(bool checked);
 

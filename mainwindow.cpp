@@ -220,11 +220,13 @@ void MainWindow::calculationDone()
 
         mResultDialog->setVoronoiEdges(algo->getVoronoiEdges(rect), rect);
         mResultDialog->setDelaunayEdges(algo->getDelaunayEdges());
+        mResultDialog->setDelaunayTimeUsage(algo->getTimeUsage());
 
     }else if(currentAlgo & AlgoChoiceDialog::Prim){
         PrimAlgorithm *algo = dynamic_cast<PrimAlgorithm*> (mAlgo);
         currentAlgo ^= AlgoChoiceDialog::Prim;
 
+        mResultDialog->setPrimTimeUsage(algo->getTimeUsage());
     }
 
     qDebug() << "delete";

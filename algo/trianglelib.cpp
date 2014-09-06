@@ -10,7 +10,7 @@ extern "C"{
 #include <QtAlgorithms>
 #include <QVector2D>
 
-void TriangleLib::findEuclideanMST(const QList<QPointF> &vertexes)
+void TriangleLib::doFindEuclideanMST(const QList<QPointF> &vertexes)
 {
     mEdges.clear();
     DelaunayEdges.clear();

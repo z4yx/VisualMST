@@ -2,7 +2,7 @@
 #include <QDebug>
 
 
-void PrimAlgorithm::findEuclideanMST(const QList<QPointF> &vertexes)
+void PrimAlgorithm::doFindEuclideanMST(const QList<QPointF> &vertexes)
 {
     result.clear();
 
