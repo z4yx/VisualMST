@@ -58,6 +58,7 @@ protected:
 private:
     bool confirmClose();
     void startCalculation();
+    void preStartCalculation();
     Ui::MainWindow *ui;
     QProgressDialog *mProgressDialog;
     NewPointDialog *mNewPointDialog;
@@ -69,6 +70,7 @@ private:
     QThread *mThread;
 
     bool isCalculating;
+    int currentAlgo;
 };
 
 #endif // MAINWINDOW_H

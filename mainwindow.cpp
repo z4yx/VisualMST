@@ -1,16 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "resultdialog.h"
+#include "algochoicedialog.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QLabel>
 #include <QDebug>
 
 #include "algo/primalgorithm.h"
 #include "algo/trianglelib.h"
 #include "algo/algorithmworker.h"
 
-#define ALGO TriangleLib
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -87,7 +88,18 @@ bool MainWindow::confirmClose()
 
 void MainWindow::startCalculation()
 {
-    mAlgo = new ALGO();
+    if(currentAlgo & AlgoChoiceDialog::Delaunay){
+        mAlgo = new TriangleLib();
+        qDebug() << "start TriangleLib";
+        mProgressDialog->setLabel(new QLabel("Calculating using triangle..."));
+    }else if(currentAlgo & AlgoChoiceDialog::Prim){
+        mAlgo = new PrimAlgorithm();
+        qDebug() << "start PrimAlgorithm";
+        mProgressDialog->setLabel(new QLabel("Calculating using prim..."));
+    }else{
+        qDebug() << "No algorithm specified";
+        return;
+    }
 
     connect(mAlgo, SIGNAL(progressUpdated(int)), mProgressDialog, SLOT(setValue(int)));
 
@@ -98,6 +110,18 @@ void MainWindow::startCalculation()
     mThread->start();
 
     qDebug() << "dialog shown";
+}
+
+void MainWindow::preStartCalculation()
+{
+
+    mProgressDialog->reset();
+    mProgressDialog->setModal(true);
+    mProgressDialog->show();
+
+    //Let other events process
+    QCoreApplication::postEvent(this, new QEvent(QEvent::User));
+//    startCalculation();
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -147,16 +171,26 @@ void MainWindow::on_actionPointMode_triggered()
 
 void MainWindow::on_actionFindMST_triggered()
 {
+    AlgoChoiceDialog *dialog = new AlgoChoiceDialog(this);
+    if(dialog->exec() != QDialog::Accepted){
+        delete dialog;
+        return;
+    }
+    currentAlgo = dialog->getAlgorithmChoices();
+    if(currentAlgo == 0){
+        delete dialog;
+        return;
+    }
+    delete dialog;
+
     if(isCalculating)
         return;
     isCalculating = true;
 
+    mResultDialog = new ResultDialog(this);
+    mResultDialog->setModal(true);
 
-    mProgressDialog->reset();
-    mProgressDialog->setModal(true);
-    mProgressDialog->show();
-    QCoreApplication::postEvent(this, new QEvent(QEvent::User));
-//    startCalculation();
+    preStartCalculation();
 }
 
 void MainWindow::on_actionNewPoint_triggered()
@@ -175,26 +209,40 @@ void MainWindow::on_actionRemovePoint_triggered()
 
 void MainWindow::calculationDone()
 {
-    ResultDialog dialog;
     QRectF rect;
-
-    ALGO *algo = dynamic_cast<ALGO*> (mAlgo);
 
     qDebug() << "done";
     mProgressDialog->cancel();
 
-    dialog.setModal(true);
-    dialog.setVoronoiEdges(algo->getVoronoiEdges(rect), rect);
-    dialog.setMSTVertexes(mVertexes->getVertexes());
-    dialog.setDelaunayEdges(algo->getDelaunayEdges());
-    dialog.setMSTEdges(algo->getMSTEdges());
+    if(currentAlgo & AlgoChoiceDialog::Delaunay){
+        TriangleLib *algo = dynamic_cast<TriangleLib*> (mAlgo);
+        currentAlgo ^= AlgoChoiceDialog::Delaunay;
+
+        mResultDialog->setVoronoiEdges(algo->getVoronoiEdges(rect), rect);
+        mResultDialog->setDelaunayEdges(algo->getDelaunayEdges());
+
+    }else if(currentAlgo & AlgoChoiceDialog::Prim){
+        PrimAlgorithm *algo = dynamic_cast<PrimAlgorithm*> (mAlgo);
+        currentAlgo ^= AlgoChoiceDialog::Prim;
+
+    }
 
     qDebug() << "delete";
     delete mThread;
-    delete mAlgo;
 
-    dialog.exec();
-    isCalculating = false;
+    if(currentAlgo == 0){
+        mResultDialog->setMSTEdges(mAlgo->getMSTEdges());
+        delete mAlgo;
+
+        mResultDialog->setMSTVertexes(mVertexes->getVertexes());
+        mResultDialog->exec();
+        delete mResultDialog;
+
+        isCalculating = false;
+    }else{
+        delete mAlgo;
+        preStartCalculation();
+    }
 }
 
 void MainWindow::addNewPoint(QPointF pt)
