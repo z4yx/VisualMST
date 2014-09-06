@@ -88,18 +88,6 @@ bool MainWindow::confirmClose()
 
 void MainWindow::startCalculation()
 {
-    if(currentAlgo & AlgoChoiceDialog::Delaunay){
-        mAlgo = new TriangleLib();
-        qDebug() << "start TriangleLib";
-        mProgressDialog->setLabel(new QLabel("Calculating using triangle..."));
-    }else if(currentAlgo & AlgoChoiceDialog::Prim){
-        mAlgo = new PrimAlgorithm();
-        qDebug() << "start PrimAlgorithm";
-        mProgressDialog->setLabel(new QLabel("Calculating using prim..."));
-    }else{
-        qDebug() << "No algorithm specified";
-        return;
-    }
 
     connect(mAlgo, SIGNAL(progressUpdated(int)), mProgressDialog, SLOT(setValue(int)));
 
@@ -114,6 +102,18 @@ void MainWindow::startCalculation()
 
 void MainWindow::preStartCalculation()
 {
+    if(currentAlgo & AlgoChoiceDialog::Delaunay){
+        mAlgo = new TriangleLib();
+        qDebug() << "start TriangleLib";
+        mProgressDialog->setLabel(new QLabel("Calculating using triangle..."));
+    }else if(currentAlgo & AlgoChoiceDialog::Prim){
+        mAlgo = new PrimAlgorithm();
+        qDebug() << "start PrimAlgorithm";
+        mProgressDialog->setLabel(new QLabel("Calculating using prim..."));
+    }else{
+        qDebug() << "No algorithm specified";
+        return;
+    }
 
     mProgressDialog->reset();
     mProgressDialog->setModal(true);
@@ -212,7 +212,6 @@ void MainWindow::calculationDone()
     QRectF rect;
 
     qDebug() << "done";
-    mProgressDialog->cancel();
 
     if(currentAlgo & AlgoChoiceDialog::Delaunay){
         TriangleLib *algo = dynamic_cast<TriangleLib*> (mAlgo);
@@ -233,6 +232,8 @@ void MainWindow::calculationDone()
     delete mThread;
 
     if(currentAlgo == 0){
+        mProgressDialog->cancel();
+
         mResultDialog->setMSTEdges(mAlgo->getMSTEdges());
         delete mAlgo;
 
