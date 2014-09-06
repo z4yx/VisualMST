@@ -2,6 +2,8 @@
 #define GRAPHICSVERTEXITEM_H
 
 #include <QGraphicsEllipseItem>
+#include <QPen>
+#include <QBrush>
 
 class GraphManager;
 
@@ -18,6 +20,8 @@ protected:
 //    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     void	 mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    void     paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                   QWidget *widget);
 
 private:
     int mId;

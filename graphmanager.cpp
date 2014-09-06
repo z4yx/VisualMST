@@ -33,6 +33,7 @@ void GraphManager::drawEditableVertex(const QMap<int,QPointF> &vtx)
 {
     qDebug() << (int)vtx.size();
     scene->clear();
+    mView->setRenderHint(QPainter::Antialiasing, vtx.size() < 1000);
     for(QMap<int,QPointF>::const_iterator it = vtx.constBegin();
         it != vtx.constEnd();
         ++it){
@@ -43,11 +44,9 @@ void GraphManager::drawEditableVertex(const QMap<int,QPointF> &vtx)
 
 void GraphManager::drawSingleVertex(QPointF point, int id)
 {
-    QBrush brush(Qt::SolidPattern);
     GraphicsVertexItem *pt;
     pt = new GraphicsVertexItem(point.x()-VERTEX_SIZE/2, point.y()-VERTEX_SIZE/2, VERTEX_SIZE, VERTEX_SIZE, id, this);
     pt->setZValue(ZValue_Vertexes);
-    pt->setBrush(brush);
     pt->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable/*|QGraphicsItem::ItemSendsGeometryChanges*/);
 //    pt->setAcceptHoverEvents(true);
     scene->addItem(pt);
