@@ -1,4 +1,5 @@
 #include "thumbdialog.h"
+#include "views/navigationrect.h"
 #include <QHBoxLayout>
 #include <QGraphicsView>
 #include <QPen>
@@ -24,13 +25,19 @@ ThumbDialog::ThumbDialog(QWidget *parent, Qt::WindowFlags f) :
     QPen pen;
     pen.setColor(QColor(Qt::red));
 //    pen.setWidthF(2);
-    mMapRect = new QGraphicsRectItem;
+    mMapRect = new NavigationRect(this);
     mMapRect->setPen(pen);
     mMapRect->setFlags(QGraphicsRectItem::ItemIsMovable);
     mScene->addItem(mMapRect);
 
     mView->setDragMode(QGraphicsView::RubberBandDrag);
     mView->setInteractive(true);
+//    mView->setCursor(QCursor(Qt::OpenHandCursor));
+}
+
+void ThumbDialog::mapRectMove(bool isMoving)
+{
+    rectMoving = isMoving;
 }
 
 
@@ -39,6 +46,24 @@ void ThumbDialog::showEvent(QShowEvent *event)
     QDialog::showEvent(event);
     if(mOrigSceneRect.width() > 0 && mOrigSceneRect.height() > 0)
         setFullMapRect(mOrigSceneRect);
+}
+
+void ThumbDialog::paintEvent(QPaintEvent *event)
+{
+    QDialog::paintEvent(event);
+    if(rectMoving){
+        QRectF r = mMapRect->rect();
+        r.translate(mMapRect->pos());
+
+        QPointF tl = r.topLeft(), br = r.bottomRight();
+        QRectF newRect = QRectF(
+                    QPointF(tl.x()/mWidthFactor, tl.y()/mHeightFactor),
+                    QPointF(br.x()/mWidthFactor, br.y()/mHeightFactor));
+        newRect.translate(mXOffset, mYOffset);
+//        qDebug() << __func__ << r << newRect;
+
+        emit navChanged(newRect);
+    }
 }
 
 void ThumbDialog::setFullMapRect(QRectF rect)
@@ -53,10 +78,13 @@ void ThumbDialog::setFullMapRect(QRectF rect)
     mScene->setSceneRect(rect);
     mView->fitInView(rect, Qt::KeepAspectRatio);
     mView->ensureVisible(rect);
+    mMapRect->setPos(0, 0);
 }
 
 void ThumbDialog::setCurrentMapRect(QRectF rect)
 {
+    if(rectMoving)
+        return;
     rect.translate(-mXOffset, -mYOffset);
     QPointF tl = rect.topLeft(), br = rect.bottomRight();
     QRectF newRect = QRectF(
@@ -64,4 +92,5 @@ void ThumbDialog::setCurrentMapRect(QRectF rect)
                 QPointF(br.x()*mWidthFactor, br.y()*mHeightFactor));
 //    qDebug() << rect << newRect;
     mMapRect->setRect(newRect);
+    mMapRect->setPos(0, 0);
 }

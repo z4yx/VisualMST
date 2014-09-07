@@ -55,7 +55,7 @@ class MSTGraphicsView : public QGraphicsView
     Q_OBJECT
 public:
     enum PointerMode{SelectMode, MoveMode, DrawPointMode};
-    MSTGraphicsView(QWidget* parent = 0, ThumbDialog *_thumb = 0) : QGraphicsView(parent), thumb(_thumb){}
+    MSTGraphicsView(QWidget* parent = 0) : QGraphicsView(parent){}
 
 
     void initView();
@@ -72,6 +72,7 @@ public slots:
     void zoomIn(qreal val);
     void zoomOut(qreal val);
     void setPointerMode(PointerMode mode);
+    void changeViewPoint(QRectF);
 
 private:
     //from -1 to +1
@@ -79,10 +80,10 @@ private:
     PointerMode mCurMode;
 
     MSTVertexes *vertexes;
-    ThumbDialog *thumb;
 
 signals:
     void newPointEvent(QPointF pt);
+    void viewpointChanged(QRectF);
 };
 
 #endif

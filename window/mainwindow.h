@@ -7,13 +7,13 @@
 #include "views/view.h"
 #include "algo/abstructmstalgo.h"
 #include "newpointdialog.h"
-#include "thumbdialog.h"
 
 namespace Ui {
 class MainWindow;
 }
 
 class ResultDialog;
+class ThumbDialog;
 
 class MainWindow : public QMainWindow
 {

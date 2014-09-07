@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "resultdialog.h"
 #include "algochoicedialog.h"
+#include "thumbdialog.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -26,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mResultDialog = new ResultDialog(this);
     mThumbDialog = new ThumbDialog(this);
 
-    mGraphicsView = new MSTGraphicsView(this, mThumbDialog);
+    mGraphicsView = new MSTGraphicsView(this);
     mGraphicsView->initView();
     ui->gridLayout->addWidget(mGraphicsView, 0, 0, 1, 1);
 
@@ -45,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mGraphManager, SIGNAL(itemDeleted(int)), mVertexes, SLOT(deleteVertex(int)));
     connect(mVertexes, SIGNAL(newVertexesLoaded(QMap<int,QPointF>)), mGraphManager, SLOT(drawEditableVertex(QMap<int,QPointF>)));
     connect(mThumbDialog, SIGNAL(finished(int)), this, SLOT(navigationClosed()));
+    connect(mThumbDialog, SIGNAL(navChanged(QRectF)), mGraphicsView, SLOT(changeViewPoint(QRectF)));
+    connect(mGraphicsView, SIGNAL(viewpointChanged(QRectF)), mThumbDialog, SLOT(setCurrentMapRect(QRectF)));
 }
 
 MainWindow::~MainWindow()

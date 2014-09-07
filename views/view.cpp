@@ -79,10 +79,8 @@ void MSTGraphicsView::paintEvent(QPaintEvent *event)
     QGraphicsView::paintEvent(event);
     const QRectF &r
         = mapToScene(rect()).boundingRect();
-//    qDebug() << event->rect();
-//    qDebug() << r;
-    if(thumb)
-        thumb->setCurrentMapRect(r);
+
+    emit viewpointChanged(r);
 }
 
 void MSTGraphicsView::zoomIn(qreal val)
@@ -114,6 +112,11 @@ void MSTGraphicsView::setPointerMode(PointerMode mode)
     mCurMode = mode;
 }
 
+void MSTGraphicsView::changeViewPoint(QRectF r)
+{
+    fitInView(r, Qt::KeepAspectRatio);
+}
+
 void MSTGraphicsView::initView()
 {
     zoom = 0.9;
@@ -131,7 +134,7 @@ void MSTGraphicsView::fitInView(const QRectF &rect, Qt::AspectRatioMode aspectRa
 {
     QGraphicsView::fitInView(rect, aspectRadioMode);
     QMatrix mat = matrix();
-    qDebug() << mat.m11() << mat.m22();
+//    qDebug() << mat.m11() << mat.m22();
     zoom = qLn(mat.m11())/qLn(2)/5;
 }
 

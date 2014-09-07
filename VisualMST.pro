@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     controller/graphmanager.cpp \
     model/vertexs.cpp \
     views/graphicsvertexitem.cpp \
-    views/view.cpp
+    views/view.cpp \
+    views/navigationrect.cpp
 
 HEADERS  += \
     algo/triangle.h \
@@ -43,7 +44,8 @@ HEADERS  += \
     controller/graphmanager.h \
     model/vertexs.h \
     views/graphicsvertexitem.h \
-    views/view.h
+    views/view.h \
+    views/navigationrect.h
 
 FORMS    += mainwindow.ui \
     resultdialog.ui \
