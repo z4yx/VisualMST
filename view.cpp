@@ -74,6 +74,16 @@ void MSTGraphicsView::mousePressEvent(QMouseEvent *e)
     }
 }
 
+void MSTGraphicsView::paintEvent(QPaintEvent *event)
+{
+    QGraphicsView::paintEvent(event);
+    const QRectF &r
+        = mapToScene(rect()).boundingRect();
+//    qDebug() << event->rect();
+//    qDebug() << r;
+    if(thumb)
+        thumb->setCurrentMapRect(r);
+}
 
 void MSTGraphicsView::zoomIn(qreal val)
 {
@@ -138,18 +148,9 @@ void MSTGraphicsView::setupMatrix()
 
     QMatrix matrix;
     matrix.scale(scale, scale);
-//    matrix.rotate(rotateSlider->value());
 
     setMatrix(matrix);
 }
-
-//void View::togglePointerMode()
-//{
-//    graphicsView->setDragMode(selectModeButton->isChecked()
-//                              ? QGraphicsView::RubberBandDrag
-//                              : QGraphicsView::ScrollHandDrag);
-//    graphicsView->setInteractive(selectModeButton->isChecked());
-//}
 
 //void View::toggleOpenGL()
 //{
@@ -158,8 +159,4 @@ void MSTGraphicsView::setupMatrix()
 //#endif
 //}
 
-//void View::toggleAntialiasing()
-//{
-//    graphicsView->setRenderHint(QPainter::Antialiasing, antialiasButton->isChecked());
-//}
 

@@ -45,6 +45,7 @@
 #include <QFrame>
 #include <QGraphicsView>
 #include "vertexs.h"
+#include "thumbdialog.h"
 
 #include <QSet>
 #include <QPointF>
@@ -54,7 +55,7 @@ class MSTGraphicsView : public QGraphicsView
     Q_OBJECT
 public:
     enum PointerMode{SelectMode, MoveMode, DrawPointMode};
-    MSTGraphicsView(QWidget* parent = 0) : QGraphicsView(parent){}
+    MSTGraphicsView(QWidget* parent = 0, ThumbDialog *_thumb = 0) : QGraphicsView(parent), thumb(_thumb){}
 
 
     void initView();
@@ -62,6 +63,7 @@ public:
 protected:
     void wheelEvent(QWheelEvent *);
     void mousePressEvent(QMouseEvent * e);
+    void paintEvent(QPaintEvent * event);
 
     void resetView();
     void setupMatrix();
@@ -77,6 +79,7 @@ private:
     PointerMode mCurMode;
 
     MSTVertexes *vertexes;
+    ThumbDialog *thumb;
 
 signals:
     void newPointEvent(QPointF pt);

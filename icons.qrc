@@ -12,5 +12,6 @@
         <file>res/tools_spreadsheet_sum.png</file>
         <file>res/properties_object_list_add.png</file>
         <file>res/Image-button_cancel.png</file>
+        <file>res/view_maximize.png</file>
     </qresource>
 </RCC>

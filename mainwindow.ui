@@ -77,6 +77,8 @@
    <addaction name="separator"/>
    <addaction name="actionNewPoint"/>
    <addaction name="actionRemovePoint"/>
+   <addaction name="separator"/>
+   <addaction name="actionNavigation"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -208,6 +210,18 @@
    </property>
    <property name="toolTip">
     <string>Remove Point</string>
+   </property>
+  </action>
+  <action name="actionNavigation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/new/icons/res/view_maximize.png</normaloff>:/new/icons/res/view_maximize.png</iconset>
+   </property>
+   <property name="text">
+    <string>Navigation</string>
    </property>
   </action>
  </widget>

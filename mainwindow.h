@@ -7,6 +7,7 @@
 #include "view.h"
 #include "algo/abstructmstalgo.h"
 #include "newpointdialog.h"
+#include "thumbdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -48,9 +49,14 @@ private slots:
 
     void on_actionRemovePoint_triggered();
 
+    void on_actionNavigation_triggered();
+
+    void on_actionNavigation_toggled(bool arg1);
+
 public slots:
     void calculationDone();
     void addNewPoint(QPointF pt);
+    void navigationClosed();
 
 protected:
     bool event(QEvent *event);
@@ -63,6 +69,7 @@ private:
     QProgressDialog *mProgressDialog;
     NewPointDialog *mNewPointDialog;
     ResultDialog *mResultDialog;
+    ThumbDialog *mThumbDialog;
     MSTGraphicsView *mGraphicsView;
     GraphManager *mGraphManager;
     MSTVertexes *mVertexes;

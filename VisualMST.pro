@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     algo/algorithmworker.cpp \
     graphicsvertexitem.cpp \
     newpointdialog.cpp \
-    algochoicedialog.cpp
+    algochoicedialog.cpp \
+    thumbdialog.cpp
 
 HEADERS  += mainwindow.h \
     view.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     algo/algorithmworker.h \
     graphicsvertexitem.h \
     newpointdialog.h \
-    algochoicedialog.h
+    algochoicedialog.h \
+    thumbdialog.h
 
 FORMS    += mainwindow.ui \
     resultdialog.ui \

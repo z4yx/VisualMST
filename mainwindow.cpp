@@ -24,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mProgressDialog->setCancelButton(0);
     mNewPointDialog = new NewPointDialog(this);
     mResultDialog = new ResultDialog(this);
+    mThumbDialog = new ThumbDialog(this);
 
-    mGraphicsView = new MSTGraphicsView(this);
+    mGraphicsView = new MSTGraphicsView(this, mThumbDialog);
     mGraphicsView->initView();
     ui->gridLayout->addWidget(mGraphicsView, 0, 0, 1, 1);
 
@@ -43,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mGraphManager, SIGNAL(itemPosChangedEvent(int,QPointF)), mVertexes, SLOT(changeVertexPos(int,QPointF)));
     connect(mGraphManager, SIGNAL(itemDeleted(int)), mVertexes, SLOT(deleteVertex(int)));
     connect(mVertexes, SIGNAL(newVertexesLoaded(QMap<int,QPointF>)), mGraphManager, SLOT(drawEditableVertex(QMap<int,QPointF>)));
+    connect(mThumbDialog, SIGNAL(finished(int)), this, SLOT(navigationClosed()));
 }
 
 MainWindow::~MainWindow()
@@ -130,6 +132,7 @@ void MainWindow::on_actionNew_triggered()
     if(!confirmClose())
         return;
     mVertexes->clearDocuments();
+    mThumbDialog->setFullMapRect(mGraphicsView->sceneRect());
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -139,6 +142,7 @@ void MainWindow::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, "Open Vertex File", "/Users/zhang/tmp", "Vertex Files (*.vtx)");
     mVertexes->loadVertexesFromFile(fileName);
     qDebug() << "Open Done!";
+    mThumbDialog->setFullMapRect(mGraphicsView->sceneRect());
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -257,6 +261,11 @@ void MainWindow::addNewPoint(QPointF pt)
     qDebug() << "new point id" << idx;
 }
 
+void MainWindow::navigationClosed()
+{
+    ui->actionNavigation->setChecked(false);
+}
+
 bool MainWindow::event(QEvent *event)
 {
     if(event->type() == QEvent::User){
@@ -267,3 +276,16 @@ bool MainWindow::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
+
+void MainWindow::on_actionNavigation_triggered(){}
+
+void MainWindow::on_actionNavigation_toggled(bool arg1)
+{
+    if(arg1){
+        QPoint p = geometry().topRight();
+        mThumbDialog->move(p.x()+20, p.y());
+        mThumbDialog->show();
+    }else{
+        mThumbDialog->close();
+    }
+}
