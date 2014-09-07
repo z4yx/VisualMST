@@ -1,6 +1,6 @@
 #include "primalgorithm.h"
 #include <QDebug>
-
+#include <limits>
 
 void PrimAlgorithm::doFindEuclideanMST(const QList<QPointF> &vertexes)
 {

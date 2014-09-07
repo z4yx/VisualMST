@@ -1,4 +1,5 @@
 #include "graphmanager.h"
+#include <limits>
 #include <QGraphicsLineItem>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsRectItem>

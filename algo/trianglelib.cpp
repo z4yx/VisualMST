@@ -5,6 +5,7 @@ extern "C"{
 }
 
 #include <cassert>
+#include <limits>
 #include <QDebug>
 
 #include <QtAlgorithms>
