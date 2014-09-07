@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QProgressDialog>
-#include "graphmanager.h"
-#include "view.h"
+#include "controller/graphmanager.h"
+#include "views/view.h"
 #include "algo/abstructmstalgo.h"
 #include "newpointdialog.h"
 #include "thumbdialog.h"

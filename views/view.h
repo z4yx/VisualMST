@@ -44,8 +44,8 @@
 
 #include <QFrame>
 #include <QGraphicsView>
-#include "vertexs.h"
-#include "thumbdialog.h"
+#include "model/vertexs.h"
+#include "window/thumbdialog.h"
 
 #include <QSet>
 #include <QPointF>

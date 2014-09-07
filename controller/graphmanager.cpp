@@ -4,7 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QDebug>
 
-#include "graphicsvertexitem.h"
+#include "views/graphicsvertexitem.h"
 
 #define VERTEX_SIZE 0.2
 #define EDGE_WIDTH  0.03

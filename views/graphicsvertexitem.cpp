@@ -3,7 +3,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QStyleOptionGraphicsItem>
 #include <QRectF>
-#include "graphmanager.h"
+#include "controller/graphmanager.h"
 
 GraphicsVertexItem::GraphicsVertexItem(qreal x, qreal y, qreal w, qreal h, int id, GraphManager* mgr):
     QGraphicsEllipseItem(x, y, w, h, 0),

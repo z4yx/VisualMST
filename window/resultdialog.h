@@ -2,8 +2,8 @@
 #define RESULTDIALOG_H
 
 #include <QDialog>
-#include "graphmanager.h"
-#include "view.h"
+#include "controller/graphmanager.h"
+#include "views/view.h"
 
 namespace Ui {
 class ResultDialog;

@@ -14,35 +14,36 @@ TEMPLATE = app
 QMAKE_CFLAGS += -DTRILIBRARY
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    view.cpp \
-    vertexs.cpp \
-    graphmanager.cpp \
     algo/triangle.c \
     algo/trianglelib.cpp \
     algo/abstructmstalgo.cpp \
     algo/primalgorithm.cpp \
-    resultdialog.cpp \
     algo/algorithmworker.cpp \
-    graphicsvertexitem.cpp \
-    newpointdialog.cpp \
-    algochoicedialog.cpp \
-    thumbdialog.cpp
+    window/algochoicedialog.cpp \
+    window/mainwindow.cpp \
+    window/newpointdialog.cpp \
+    window/resultdialog.cpp \
+    window/thumbdialog.cpp \
+    controller/graphmanager.cpp \
+    model/vertexs.cpp \
+    views/graphicsvertexitem.cpp \
+    views/view.cpp
 
-HEADERS  += mainwindow.h \
-    view.h \
-    vertexs.h \
-    graphmanager.h \
+HEADERS  += \
     algo/triangle.h \
     algo/trianglelib.h \
     algo/abstructmstalgo.h \
     algo/primalgorithm.h \
-    resultdialog.h \
     algo/algorithmworker.h \
-    graphicsvertexitem.h \
-    newpointdialog.h \
-    algochoicedialog.h \
-    thumbdialog.h
+    window/algochoicedialog.h \
+    window/mainwindow.h \
+    window/newpointdialog.h \
+    window/resultdialog.h \
+    window/thumbdialog.h \
+    controller/graphmanager.h \
+    model/vertexs.h \
+    views/graphicsvertexitem.h \
+    views/view.h
 
 FORMS    += mainwindow.ui \
     resultdialog.ui \

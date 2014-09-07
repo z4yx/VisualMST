@@ -1,7 +1,7 @@
 #ifndef GRAPHMANAGER_H
 #define GRAPHMANAGER_H
 
-#include "view.h"
+#include "views/view.h"
 #include <QGraphicsScene>
 #include <QMap>
 
