@@ -58,6 +58,7 @@ public:
 
 
     void initView();
+    void fitInView(const QRectF &rect, Qt::AspectRatioMode aspectRadioMode = Qt::IgnoreAspectRatio);
 protected:
     void wheelEvent(QWheelEvent *);
     void mousePressEvent(QMouseEvent * e);

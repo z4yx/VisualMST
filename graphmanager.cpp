@@ -34,12 +34,19 @@ void GraphManager::drawEditableVertex(const QMap<int,QPointF> &vtx)
     qDebug() << (int)vtx.size();
     scene->clear();
     mView->setRenderHint(QPainter::Antialiasing, vtx.size() < 1000);
+
+    QRectF rect = calculateFitRect(vtx);
+    scene->setSceneRect(rect);
+    rect.setSize(QSizeF(rect.width()/3, rect.height()/3));
+    mView->fitInView(rect, Qt::KeepAspectRatio );
+
     for(QMap<int,QPointF>::const_iterator it = vtx.constBegin();
         it != vtx.constEnd();
         ++it){
 
         drawSingleVertex(it.value(), it.key());
     }
+    qDebug() << "fitted";
 }
 
 void GraphManager::drawSingleVertex(QPointF point, int id)
@@ -65,10 +72,47 @@ void GraphManager::removeAndDeleteGroupItems(QGraphicsItemGroup *grp)
     }
 }
 
+QRectF GraphManager::calculateFitRect(const QMap<int, QPointF> &vtx)
+{
+    QRectF rect;
+    if(vtx.empty()){
+        qDebug() << "No Vertex";
+        rect.setRect(0, 0, 30, 30);
+        return rect;
+    }
+
+    double maxx = std::numeric_limits<double>::min();
+    double maxy = maxx;
+    double minx = std::numeric_limits<double>::max();
+    double miny = minx;
+
+    QMap<int,QPointF>::const_iterator i = vtx.constBegin();
+    while (i != vtx.constEnd()) {
+        const QPointF& pt = i.value();
+        maxx = std::max(maxx, pt.x());
+        minx = std::min(minx, pt.x());
+        maxy = std::max(maxy, pt.y());
+        miny = std::min(miny, pt.y());
+
+        ++i;
+    }
+    minx -= VERTEX_SIZE; miny -= VERTEX_SIZE;
+    minx += VERTEX_SIZE; maxy += VERTEX_SIZE;
+
+    rect.setRect(minx, miny, maxx-minx, maxy-miny);
+    return rect;
+}
+
 
 void GraphManager::drawVertexes(const QMap<int,QPointF> &vtx, bool visible)
 {
     removeAndDeleteGroupItems(mVertexGroup);
+
+    QRectF rect = calculateFitRect(vtx);
+    scene->setSceneRect(rect);
+    rect.setSize(QSizeF(rect.width()/3, rect.height()/3));
+    mView->fitInView(rect, Qt::KeepAspectRatio );
+    qDebug() << rect;
 
     QMap<int,QPointF>::const_iterator i = vtx.constBegin();
     QBrush brush(Qt::SolidPattern);

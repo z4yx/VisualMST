@@ -117,6 +117,14 @@ void MSTGraphicsView::initView()
     setupMatrix();
 }
 
+void MSTGraphicsView::fitInView(const QRectF &rect, Qt::AspectRatioMode aspectRadioMode)
+{
+    QGraphicsView::fitInView(rect, aspectRadioMode);
+    QMatrix mat = matrix();
+    qDebug() << mat.m11() << mat.m22();
+    zoom = qLn(mat.m11())/qLn(2)/5;
+}
+
 
 void MSTGraphicsView::resetView()
 {

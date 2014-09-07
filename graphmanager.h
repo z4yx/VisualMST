@@ -16,7 +16,7 @@ private:
     QGraphicsItemGroup *mVertexGroup, *mMSTEdgeGroup, *mVoronoiEdgeGroup, *mDelaunayEdgeGroup;
 
     void removeAndDeleteGroupItems(QGraphicsItemGroup *grp);
-
+    QRectF calculateFitRect(const QMap<int,QPointF>&);
 public:
     GraphManager(MSTGraphicsView *view);
 
