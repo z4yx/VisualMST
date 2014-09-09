@@ -245,6 +245,7 @@ void MainWindow::calculationDone()
         mResultDialog->setMSTEdges(mAlgo->getMSTEdges());
         delete mAlgo;
 
+        mResultDialog->show();
         mResultDialog->setMSTVertexes(mVertexes->getVertexes());
         mResultDialog->exec();
         delete mResultDialog;
